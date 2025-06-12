@@ -14,8 +14,8 @@ One click deployment in Google Collab : [![Open MocapNET v4 In Colab](https://co
 
 12-06-2025
 
-Trying [Mediapipe + MocapNET v4.0](https://github.com/FORTH-ModelBasedTracker/MocapNET/tree/mnet4) on a [Lenovo Ideapad Pro 5 14IMH9](http://ammar.gr/mocapnet/lenovo_ideapad_pro_5_14IMH9_mnet4.mp4) it can run at a sustained 30Hz!
-[![Video Link](https://raw.githubusercontent.com/FORTH-ModelBasedTracker/MocapNET/master/doc/lenovo_mnet4_vid.jpg)](http://ammar.gr/mocapnet/lenovo_ideapad_pro_5_14IMH9_mnet4_sh.mkv)
+Trying [Mediapipe + MocapNET v4.0](https://github.com/FORTH-ModelBasedTracker/MocapNET/blob/mnet4/src/python/mnet4/mediapipeHolisticWebcamMocapNET.py) on a [Lenovo Ideapad Pro 5 14IMH9](http://ammar.gr/mocapnet/lenovo_ideapad_pro_5_14IMH9_mnet4.mp4) it can run at a sustained 30Hz while tackling body + hands + face!
+[![Video Link](https://raw.githubusercontent.com/FORTH-ModelBasedTracker/MocapNET/master/doc/lenovo_mnet4_vid.jpg)](http://ammar.gr/mocapnet/lenovo_ideapad_pro_5_14IMH9_mnet4_sh.mp4)
 
 
 14-2-2024
