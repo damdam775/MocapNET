@@ -12,6 +12,12 @@ One click deployment in Google Collab : [![Open MocapNET v4 In Colab](https://co
 ------------------------------------------------------------------ 
 
 
+12-06-2025
+
+Trying [Mediapipe + MocapNET v4.0](https://github.com/FORTH-ModelBasedTracker/MocapNET/tree/mnet4) on a [Lenovo Ideapad Pro 5 14IMH9](http://ammar.gr/mocapnet/lenovo_ideapad_pro_5_14IMH9_mnet4.mp4) it can run at a sustained 30Hz!
+[![Video Link](https://raw.githubusercontent.com/FORTH-ModelBasedTracker/MocapNET/master/doc/lenovo_mnet4_vid.jpg)](http://ammar.gr/mocapnet/lenovo_ideapad_pro_5_14IMH9_mnet4_sh.mkv)
+
+
 14-2-2024
 Last Wednesday (8-2-2024) I successfully defended the MocapNET Ph.D. thesis! I am currently at the process of finalizing the MocapNET PhD thesis text, however there are also some good news for the project in regards to the continuation of development and its funding in the context of the [Greece4.0 call](https://www.greece40.gr/). Thank you for your patience in regards with the recent repository inactivity, which I am working hard in order to improve..! 
 ![MocapNET PhD Thesis photo](https://raw.githubusercontent.com/FORTH-ModelBasedTracker/MocapNET/master/doc/thesisdefence.jpg)
