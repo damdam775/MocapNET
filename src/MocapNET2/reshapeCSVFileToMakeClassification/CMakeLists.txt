@@ -8,7 +8,7 @@ cmake_minimum_required( VERSION 2.8.13 )
 
 
 add_executable(ReshapeCSV reshapeCSV.cpp )   
-target_link_libraries(ReshapeCSV rt dl m Tensorflow  TensorflowFramework MocapNETLib2 )
+target_link_libraries(ReshapeCSV ${MOCAPNET_POSIX_LIBS} Tensorflow  TensorflowFramework MocapNETLib2 )
 #set_target_properties(TestCSV PROPERTIES DEBUG_POSTFIX "D") 
        
 

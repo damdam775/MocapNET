@@ -6,7 +6,7 @@ find_package(OpenCV REQUIRED)
 INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 
 add_executable(HandOnlyTest handTest.cpp)   
-target_link_libraries(HandOnlyTest rt dl m ${OpenCV_LIBRARIES}  Tensorflow  TensorflowFramework MocapNETLib2 )
+target_link_libraries(HandOnlyTest ${MOCAPNET_POSIX_LIBS} ${OpenCV_LIBRARIES}  Tensorflow  TensorflowFramework MocapNETLib2 )
 set_target_properties(HandOnlyTest PROPERTIES DEBUG_POSTFIX "D") 
        
 

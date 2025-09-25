@@ -1,8 +1,16 @@
 #include "tools.hpp"
 
+#include "common/windows_compat.h"
+#include "common/console_colors.h"
+
+#ifndef _WIN32
 #include <sys/time.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#else
+#include <sys/stat.h>
+#include <windows.h>
+#endif
 #include <time.h>
 #include <stdio.h>
 #include <math.h>
@@ -14,11 +22,6 @@
 unsigned long tickBaseMN = 0;
 
 
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
  
 
 int vectorcmp(std::vector<float> vA,std::vector<float> vB, float maximumDistance)
@@ -48,12 +51,23 @@ int vectorcmp(std::vector<float> vA,std::vector<float> vB, float maximumDistance
 
 int nsleep(long nanoseconds)
 {
+#ifdef _WIN32
+   if (nanoseconds <= 0)
+   {
+      return 0;
+   }
+   struct timespec req;
+   req.tv_sec = (long)(nanoseconds / 1000000000L);
+   req.tv_nsec = nanoseconds % 1000000000L;
+   return nanosleep(&req, NULL);
+#else
    struct timespec req, rem;
 
-   req.tv_sec = 0;              
-   req.tv_nsec = nanoseconds; 
+   req.tv_sec = 0;
+   req.tv_nsec = nanoseconds;
 
    return nanosleep(&req , &rem);
+#endif
 }
 
 

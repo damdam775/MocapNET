@@ -7,7 +7,10 @@
 #include <vector>
 #include <math.h>
 #include <string.h>
+#include "common/windows_compat.h"
+#ifndef _WIN32
 #include <unistd.h>
+#endif
  
 #include "../MocapNETLib2/mocapnet2.hpp" 
 #include "../MocapNETLib2/core/core.hpp" 

@@ -4,8 +4,15 @@ cmake_minimum_required( VERSION 2.8.13 )
 #Make fast, lean and platform independent binaries..
 #The -fuse-ld=gold flag solves issue https://github.com/FORTH-ModelBasedTracker/MocapNET/issues/34
 #However it causes https://github.com/FORTH-ModelBasedTracker/MocapNET/issues/38
+if (WIN32)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+else()
 set(CMAKE_CXX_FLAGS "-s -O3 -fPIC -march=native -mtune=native") #-fuse-ld=gold
 set(CMAKE_C_FLAGS "-s -O3 -fPIC -march=native -mtune=native") #-fuse-ld=gold
+endif()
+
+add_compile_definitions(_USE_MATH_DEFINES)
 
 OPTION(ENABLE_OPENGL OFF)
 OPTION(INTEL_OPTIMIZATIONS OFF)
@@ -29,7 +36,13 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 #JPEG/PNG libraries..
 set(JPG_Libs jpeg)
-set(PNG_Libs png) 
+set(PNG_Libs png)
+
+if (WIN32)
+  set(MOCAPNET_POSIX_LIBS "")
+else()
+  set(MOCAPNET_POSIX_LIBS rt dl m pthread)
+endif()
 
 
 
@@ -37,10 +50,20 @@ set(PNG_Libs png)
 #------------------------------------------------------------------------------------------------------------------------------------------------
 #First search for Tensorflow 2.x
 #------------------------------------------------------------------------------------------------------------------------------------------------
-IF(EXISTS "${CMAKE_SOURCE_DIR}/dependencies/libtensorflow/lib/libtensorflow.so.2")
+IF(WIN32 AND EXISTS "${CMAKE_SOURCE_DIR}/dependencies/libtensorflow/lib/tensorflow.dll")
+ MESSAGE("Using locally found Windows libtensorflow v2 C-API")
+ set(TENSORFLOW_ROOT "${CMAKE_SOURCE_DIR}/dependencies/libtensorflow/lib" CACHE PATH "tensorflow root")
+ set(TENSORFLOW_INCLUDE_ROOT "${CMAKE_SOURCE_DIR}/dependencies/libtensorflow/include" CACHE PATH "tensorflow include")
+ set(TENSORFLOW2_FOUND true CACHE BOOL "Tensorflow 2 available")
+ set(TENSORFLOW_SOURCE_FILES
+      ${CMAKE_SOURCE_DIR}/src/NeuralNetworkAbstractionLayer/neuralNetworkAbstraction.cpp
+      ${CMAKE_SOURCE_DIR}/src/Tensorflow/tensorflow.cpp
+      ${CMAKE_SOURCE_DIR}/src/Tensorflow/tf_utils.cpp
+    )
+ELSEIF(EXISTS "${CMAKE_SOURCE_DIR}/dependencies/libtensorflow/lib/libtensorflow.so.2")
  MESSAGE("Using locally found libtensorflow v2 C-API")
- set(TENSORFLOW_ROOT "${CMAKE_SOURCE_DIR}/dependencies/libtensorflow/lib/" CACHE PATH "tensorflow root") 
- set(TENSORFLOW_INCLUDE_ROOT "${CMAKE_SOURCE_DIR}/dependencies/libtensorflow/include/" CACHE PATH "tensorflow include")  
+ set(TENSORFLOW_ROOT "${CMAKE_SOURCE_DIR}/dependencies/libtensorflow/lib/" CACHE PATH "tensorflow root")
+ set(TENSORFLOW_INCLUDE_ROOT "${CMAKE_SOURCE_DIR}/dependencies/libtensorflow/include/" CACHE PATH "tensorflow include")
  set(TENSORFLOW2_FOUND true CACHE BOOL "Tensorflow 2 available")
  set(TENSORFLOW_SOURCE_FILES
       ${CMAKE_SOURCE_DIR}/src/NeuralNetworkAbstractionLayer/neuralNetworkAbstraction.cpp
@@ -91,21 +114,46 @@ ENDIF()
 
 
 include_directories(${TENSORFLOW_INCLUDE_ROOT})
+include_directories(${CMAKE_SOURCE_DIR}/src)
 ADD_LIBRARY(TensorflowFramework SHARED IMPORTED) 
 
-IF (TENSORFLOW2_FOUND)
-  SET_TARGET_PROPERTIES(TensorflowFramework PROPERTIES IMPORTED_LOCATION ${TENSORFLOW_ROOT}/libtensorflow_framework.so.2) 
-ELSE(TENSORFLOW2_FOUND)
-  SET_TARGET_PROPERTIES(TensorflowFramework PROPERTIES IMPORTED_LOCATION ${TENSORFLOW_ROOT}/libtensorflow_framework.so) 
-ENDIF (TENSORFLOW2_FOUND)
+IF (WIN32)
+  IF (TENSORFLOW2_FOUND)
+    SET_TARGET_PROPERTIES(TensorflowFramework PROPERTIES
+      IMPORTED_IMPLIB ${TENSORFLOW_ROOT}/tensorflow_framework.lib
+      IMPORTED_LOCATION ${TENSORFLOW_ROOT}/tensorflow_framework.dll)
+  ELSE()
+    SET_TARGET_PROPERTIES(TensorflowFramework PROPERTIES
+      IMPORTED_IMPLIB ${TENSORFLOW_ROOT}/tensorflow_framework.lib
+      IMPORTED_LOCATION ${TENSORFLOW_ROOT}/tensorflow_framework.dll)
+  ENDIF()
+ELSE()
+  IF (TENSORFLOW2_FOUND)
+    SET_TARGET_PROPERTIES(TensorflowFramework PROPERTIES IMPORTED_LOCATION ${TENSORFLOW_ROOT}/libtensorflow_framework.so.2)
+  ELSE()
+    SET_TARGET_PROPERTIES(TensorflowFramework PROPERTIES IMPORTED_LOCATION ${TENSORFLOW_ROOT}/libtensorflow_framework.so)
+  ENDIF()
+ENDIF()
 
 ADD_LIBRARY(Tensorflow SHARED IMPORTED)
 
-IF (TENSORFLOW2_FOUND)
- SET_TARGET_PROPERTIES(Tensorflow PROPERTIES IMPORTED_LOCATION ${TENSORFLOW_ROOT}/libtensorflow.so.2)  
-ELSE(TENSORFLOW2_FOUND)
- SET_TARGET_PROPERTIES(Tensorflow PROPERTIES IMPORTED_LOCATION ${TENSORFLOW_ROOT}/libtensorflow.so)  
-ENDIF (TENSORFLOW2_FOUND)
+IF (WIN32)
+  IF (TENSORFLOW2_FOUND)
+    SET_TARGET_PROPERTIES(Tensorflow PROPERTIES
+      IMPORTED_IMPLIB ${TENSORFLOW_ROOT}/tensorflow.lib
+      IMPORTED_LOCATION ${TENSORFLOW_ROOT}/tensorflow.dll)
+  ELSE()
+    SET_TARGET_PROPERTIES(Tensorflow PROPERTIES
+      IMPORTED_IMPLIB ${TENSORFLOW_ROOT}/tensorflow.lib
+      IMPORTED_LOCATION ${TENSORFLOW_ROOT}/tensorflow.dll)
+  ENDIF()
+ELSE()
+  IF (TENSORFLOW2_FOUND)
+    SET_TARGET_PROPERTIES(Tensorflow PROPERTIES IMPORTED_LOCATION ${TENSORFLOW_ROOT}/libtensorflow.so.2)
+  ELSE()
+    SET_TARGET_PROPERTIES(Tensorflow PROPERTIES IMPORTED_LOCATION ${TENSORFLOW_ROOT}/libtensorflow.so)
+  ENDIF()
+ENDIF()
 
 
 
@@ -194,7 +242,11 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/dependencies/RGBDAcquisition/tools/Calibrat
 #add_subdirectory(${CMAKE_SOURCE_DIR}/dependencies/RGBDAcquisition/opengl_acquisition_shared_library) #OpenGLAcquisition
 add_definitions(-DUSE_OPENGL)
 #add_definitions(-DUSE_GLEW)
-set(OPENGL_LIBS  rt m GL GLU GLEW X11 Codecs CalibrationLibrary)
+if (WIN32)
+set(OPENGL_LIBS  ${MOCAPNET_POSIX_LIBS} opengl32 glu32 Codecs CalibrationLibrary)
+else()
+set(OPENGL_LIBS  ${MOCAPNET_POSIX_LIBS} GL GLU GLEW X11 Codecs CalibrationLibrary)
+endif()
 set(OPENGL_SOURCE 
               ${CMAKE_SOURCE_DIR}/dependencies/RGBDAcquisition/opengl_acquisition_shared_library/OpenGLAcquisition.c
               ${CMAKE_SOURCE_DIR}/dependencies/RGBDAcquisition/opengl_acquisition_shared_library/OpenGLAcquisition.h

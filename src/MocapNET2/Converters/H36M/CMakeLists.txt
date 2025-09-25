@@ -26,7 +26,7 @@ add_executable(
 
 #-----------------------------------------------
 
-target_link_libraries(convertH36GroundTruthToMocapNETInput rt dl m pthread MocapNETLib2)
+target_link_libraries(convertH36GroundTruthToMocapNETInput ${MOCAPNET_POSIX_LIBS} MocapNETLib2)
 set_target_properties(convertH36GroundTruthToMocapNETInput PROPERTIES DEBUG_POSTFIX "D") 
 set_target_properties(convertH36GroundTruthToMocapNETInput PROPERTIES 
                        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}"

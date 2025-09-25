@@ -1,0 +1,10 @@
+build/
+Release/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+vcpkg_installed/
+vcpkg/
+packages/
+installed/

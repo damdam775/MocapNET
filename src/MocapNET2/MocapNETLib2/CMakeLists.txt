@@ -60,7 +60,7 @@ ${TENSORFLOW_SOURCE_FILES}
 )   
 
 
-target_link_libraries(MocapNETLib2 rt dl m pthread ${OpenCV_LIBRARIES} ${OPENGL_LIBS} Tensorflow TensorflowFramework ${NETWORK_CLIENT_LIBRARIES} ${PNG_Libs} ${JPG_Libs} )
+target_link_libraries(MocapNETLib2 ${MOCAPNET_POSIX_LIBS} ${OpenCV_LIBRARIES} ${OPENGL_LIBS} Tensorflow TensorflowFramework ${NETWORK_CLIENT_LIBRARIES} ${PNG_Libs} ${JPG_Libs} )
 set_target_properties(MocapNETLib2 PROPERTIES DEBUG_POSTFIX "D") 
        
 

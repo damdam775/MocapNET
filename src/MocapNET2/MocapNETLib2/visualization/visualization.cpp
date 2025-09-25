@@ -16,14 +16,10 @@ using namespace cv;
 #include "../IO/bvh.hpp"
 #include "../tools.hpp"
 #include "../mocapnet2.hpp"
+#include "common/console_colors.h"
 //#include "../MocapNETLib2/NSDM/legacyNSDM.hpp"
 
 
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
 
 std::vector<cv::Point> leftEndEffector;
 std::vector<cv::Point> rightEndEffector;

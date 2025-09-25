@@ -11,12 +11,7 @@
 #include "../../MocapNETLib2/IO/jsonMocapNETHelpers.hpp"
 
 #include "../../../../dependencies/InputParser/InputParser_C.h"
-
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
+#include "common/console_colors.h"
 
 
 

@@ -7,7 +7,7 @@ INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
  
 
 add_executable(OpenCVTest webcam.cpp)   
-target_link_libraries(OpenCVTest rt dl m ${OpenCV_LIBRARIES}    )
+target_link_libraries(OpenCVTest ${MOCAPNET_POSIX_LIBS} ${OpenCV_LIBRARIES}    )
 set_target_properties(OpenCVTest PROPERTIES DEBUG_POSTFIX "D") 
        
 

@@ -18,16 +18,12 @@
 #include "../../MocapNETLib2/solutionParts/body.hpp"
 #include "../../MocapNETLib2/solutionParts/upperBody.hpp"
 #include "../../MocapNETLib2/solutionParts/lowerBody.hpp"
+#include "common/console_colors.h"
 //----------------------------------------------
 #include "../../MocapNETLib2/core/singleThreaded.hpp"
 #include "../../MocapNETLib2/core/multiThreaded.hpp"
 //----------------------------------------------
 
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
 
 
 float undoOrientationTrickForBackOrientation(float orientation)

@@ -26,7 +26,7 @@ add_executable(
 
 #-----------------------------------------------
 
-target_link_libraries(convertCSV3DToMocapNETInput rt dl m pthread MocapNETLib2)
+target_link_libraries(convertCSV3DToMocapNETInput ${MOCAPNET_POSIX_LIBS} MocapNETLib2)
 set_target_properties(convertCSV3DToMocapNETInput PROPERTIES DEBUG_POSTFIX "D") 
 set_target_properties(convertCSV3DToMocapNETInput PROPERTIES 
                        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}"

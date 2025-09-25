@@ -60,12 +60,8 @@
 #include "../../../MocapNET2/MocapNETLib2/IO/jsonRead.hpp"
 #include "../../../MocapNET2/MocapNETLib2/IO/csvRead.hpp"
 #include "../../../MocapNET2/MocapNETLib2/IO/csvWrite.hpp"
+#include "common/console_colors.h"
 
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
 
 
 int  findFirstJSONFileInDirectory(const char * path,const char * formatString, const char * label, unsigned int * frameIDOutput)

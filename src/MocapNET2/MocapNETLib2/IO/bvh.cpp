@@ -7,12 +7,7 @@
 #include "skeletonSerializedToBVHTransform.hpp"
 #include "../mocapnet2.hpp"
 #include "../visualization/opengl.hpp"
-
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
+#include "common/console_colors.h"
 
 
 #if USE_BVH

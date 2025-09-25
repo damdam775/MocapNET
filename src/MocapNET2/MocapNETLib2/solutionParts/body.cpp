@@ -4,12 +4,7 @@
 #include "../../MocapNETLib2/IO/conversions.hpp"
 #include "../../MocapNETLib2/tools.hpp"
 #include "../../MocapNETLib2/core/core.hpp"
-
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
+#include "common/console_colors.h"
 
 int mocapnetBody_initializeAssociations(struct MocapNET2 * mnet, struct skeletonSerialized * input)
 {

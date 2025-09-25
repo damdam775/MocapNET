@@ -17,7 +17,7 @@ perform3DClustering.cpp
 ${BVH_SOURCE}
 )
 
-target_link_libraries(CSVClusterPlot rt dl m ${OpenCV_LIBRARIES} ${OPENGL_LIBS} Tensorflow  TensorflowFramework MocapNETLib2 )
+target_link_libraries(CSVClusterPlot ${MOCAPNET_POSIX_LIBS} ${OpenCV_LIBRARIES} ${OPENGL_LIBS} Tensorflow  TensorflowFramework MocapNETLib2 )
 #set_target_properties(CSVClusterPlot PROPERTIES DEBUG_POSTFIX "D") 
 
 
