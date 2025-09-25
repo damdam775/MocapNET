@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "common/console_colors.h"
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 
 #include "../mocapnet2.hpp"
 #include "parseCommandlineOptions.hpp"
@@ -14,11 +17,6 @@
 
 
 
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
 
 const char   outputPathStatic[]="out.bvh";
 

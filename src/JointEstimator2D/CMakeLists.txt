@@ -16,7 +16,7 @@ add_library(
             ${CMAKE_SOURCE_DIR}/src/Tensorflow/tf_utils.cpp
            )
 
-target_link_libraries(JointEstimator2D rt dl m Tensorflow TensorflowFramework )
+target_link_libraries(JointEstimator2D ${MOCAPNET_POSIX_LIBS} Tensorflow TensorflowFramework )
 set_target_properties(JointEstimator2D PROPERTIES DEBUG_POSTFIX "D") 
        
 
@@ -33,7 +33,7 @@ find_package(OpenCV REQUIRED)
 INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 
 add_executable(WebcamAnd2DJoints webcamAnd2DJoints.cpp)   
-target_link_libraries(WebcamAnd2DJoints rt dl m ${OpenCV_LIBRARIES} JointEstimator2D  Tensorflow  TensorflowFramework)
+target_link_libraries(WebcamAnd2DJoints ${MOCAPNET_POSIX_LIBS} ${OpenCV_LIBRARIES} JointEstimator2D  Tensorflow  TensorflowFramework)
 set_target_properties(WebcamAnd2DJoints PROPERTIES DEBUG_POSTFIX "D") 
        
 

@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include <sys/stat.h> //mkdir
+#include "common/windows_compat.h"
 #include "../MocapNETLib2/mocapnet2.hpp"
 #include "../MocapNETLib2/IO/bvh.hpp"
 #include "../MocapNETLib2/visualization/visualization.hpp"

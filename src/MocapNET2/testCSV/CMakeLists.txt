@@ -8,7 +8,7 @@ INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 
 
 add_executable(TestCSV testCSV.cpp )   
-target_link_libraries(TestCSV rt dl m Tensorflow  TensorflowFramework MocapNETLib2 )
+target_link_libraries(TestCSV ${MOCAPNET_POSIX_LIBS} Tensorflow  TensorflowFramework MocapNETLib2 )
 #set_target_properties(TestCSV PROPERTIES DEBUG_POSTFIX "D") 
        
 

@@ -8,7 +8,10 @@
 #include <vector>
 #include <math.h>
 #include <string.h>
+#include "common/console_colors.h"
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 
 #include "../MocapNETLib2/applicationLogic/parseCommandlineOptions.hpp"
 
@@ -41,11 +44,6 @@
 #include "../../../dependencies/RGBDAcquisition/opengl_acquisition_shared_library/opengl_depth_and_color_renderer/src/Library/MotionCaptureLoader/ik/hardcodedProblems_inverseKinematics.h"
  
 
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
 
 
 unsigned int myMin(unsigned int a,unsigned int b)

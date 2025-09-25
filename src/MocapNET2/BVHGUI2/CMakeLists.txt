@@ -12,7 +12,7 @@ include_directories(${TENSORFLOW_INCLUDE_ROOT})
 add_executable(BVHGUI2 bvhGUI2.cpp 
 ${BVH_SOURCE} )
 
-target_link_libraries(BVHGUI2 rt dl m ${OpenCV_LIBRARIES} ${OPENGL_LIBS} Tensorflow  TensorflowFramework MocapNETLib2 )
+target_link_libraries(BVHGUI2 ${MOCAPNET_POSIX_LIBS} ${OpenCV_LIBRARIES} ${OPENGL_LIBS} Tensorflow  TensorflowFramework MocapNETLib2 )
 set_target_properties(BVHGUI2 PROPERTIES DEBUG_POSTFIX "D") 
 
 

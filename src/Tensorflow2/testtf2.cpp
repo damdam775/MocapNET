@@ -1,17 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h> 
 #include <string.h> 
-#include <math.h> 
+#include <math.h>
 #include <vector>
+#include "common/windows_compat.h"
+#include "common/console_colors.h"
 
 #include "tensorflow2.h"
 
 
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
 
 
 float rand_FloatRange(float a, float b)
@@ -138,7 +135,9 @@ int testUpperBody()
 
 
 
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 int executeCommandLineAndRetreiveAllResults(const char *  command , char * what2GetBack , unsigned int what2GetBackMaxSize, unsigned long * what2GetBackSize)
 {
  /* Open the command for reading. */

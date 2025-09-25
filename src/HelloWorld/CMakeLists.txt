@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.5)
 #-----------------------------------------------
 project( helloWorld )  
 add_executable(helloWorld main.cpp)   
-target_link_libraries(helloWorld rt dl m )
+target_link_libraries(helloWorld ${MOCAPNET_POSIX_LIBS} )
 set_target_properties(helloWorld PROPERTIES DEBUG_POSTFIX "D") 
 set_target_properties(helloWorld PROPERTIES 
                        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}"

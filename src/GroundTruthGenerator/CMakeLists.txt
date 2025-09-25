@@ -10,7 +10,7 @@ ${CMAKE_SOURCE_DIR}/dependencies/RGBDAcquisition/opengl_acquisition_shared_libra
 ${BVH_SOURCE}
               )
  
-target_link_libraries(GroundTruthDumper rt m pthread ) 
+target_link_libraries(GroundTruthDumper ${MOCAPNET_POSIX_LIBS})
 #add_dependencies(GroundTruthDumper OGLRendererSandbox)  
        
  

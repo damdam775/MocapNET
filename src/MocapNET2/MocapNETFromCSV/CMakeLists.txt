@@ -6,7 +6,7 @@ find_package(OpenCV REQUIRED)
 INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 
 add_executable(MocapNET2CSV  mocapnet2CSV.cpp  )   
-target_link_libraries(MocapNET2CSV rt dl m ${OpenCV_LIBRARIES}  Tensorflow  TensorflowFramework MocapNETLib2 )
+target_link_libraries(MocapNET2CSV ${MOCAPNET_POSIX_LIBS} ${OpenCV_LIBRARIES}  Tensorflow  TensorflowFramework MocapNETLib2 )
 set_target_properties(MocapNET2CSV PROPERTIES DEBUG_POSTFIX "D") 
        
 

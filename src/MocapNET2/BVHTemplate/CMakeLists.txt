@@ -5,7 +5,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/modules ${CMAKE_MODUL
 
 add_executable(BVHTemplate  main.c ${BVH_SOURCE} )
  
-target_link_libraries(BVHTemplate rt m pthread ) 
+target_link_libraries(BVHTemplate ${MOCAPNET_POSIX_LIBS})
 #add_dependencies(BVHTemplate OGLRendererSandbox)  
        
  

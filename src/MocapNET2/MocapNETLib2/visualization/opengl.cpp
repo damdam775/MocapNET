@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "opengl.hpp"
 #include "../mocapnet2.hpp"
+#include "common/console_colors.h"
 
 #if USE_OPENGL
  int openGLHasInitialization=0;
@@ -8,11 +9,6 @@
  #include "../../../../dependencies/RGBDAcquisition/opengl_acquisition_shared_library/OpenGLAcquisition.h"
 #endif
 
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
 
 
 int initializeOpenGLStuff(unsigned int openGLFrameWidth,unsigned int openGLFrameHeight)

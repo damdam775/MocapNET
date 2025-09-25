@@ -15,6 +15,8 @@
 #include <vector>
 #include <iostream>
 #include <cstdint> // include this header for uint64_t
+#include "common/windows_compat.h"
+#include "common/console_colors.h"
 /*
 std::vector<int> get_tensor_shape(tensorflow::Tensor& tensor)
 {
@@ -26,15 +28,12 @@ std::vector<int> get_tensor_shape(tensorflow::Tensor& tensor)
     return shape;
 }*/
 
-#define NORMAL   "\033[0m"
-#define BLACK   "\033[30m"      /* Black */
-#define RED     "\033[31m"      /* Red */
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
 
+#ifndef _WIN32
 #include <sys/time.h>
 #include <unistd.h>
 #include <time.h>
+#endif
 
 
 unsigned long tickBaseTF = 0;
@@ -42,6 +41,22 @@ unsigned long tickBaseTF = 0;
 
 unsigned long GetTickCountMicroseconds()
 {
+#ifdef _WIN32
+    static LARGE_INTEGER frequency = {0};
+    LARGE_INTEGER counter;
+    if (frequency.QuadPart == 0)
+    {
+        QueryPerformanceFrequency(&frequency);
+    }
+    QueryPerformanceCounter(&counter);
+    unsigned long current = (unsigned long)((counter.QuadPart * 1000000ULL) / frequency.QuadPart);
+    if (tickBaseTF == 0)
+    {
+        tickBaseTF = current;
+        return 0;
+    }
+    return current - tickBaseTF;
+#else
     struct timespec ts;
     if ( clock_gettime(CLOCK_MONOTONIC,&ts) != 0)
         {
@@ -55,6 +70,7 @@ unsigned long GetTickCountMicroseconds()
         }
 
     return ( ts.tv_sec*1000000 + ts.tv_nsec/1000 ) - tickBaseTF;
+#endif
 }
 
 
