@@ -4,8 +4,8 @@ setlocal EnableExtensions EnableDelayedExpansion
 rem ---------------------------------------------------------------------------
 rem MocapNET Windows build and installation helper
 rem This script checks dependencies, downloads pretrained assets, configures the
-rem build directory, compiles MocapNET, and finally launches the live demo.
-rem It also exposes optional flows for rebuilding TensorFlow using WSL.
+rem build directory, compiles MocapNET, and finally launches the live demo
+rem It also exposes optional flows for rebuilding TensorFlow using WSL
 rem ---------------------------------------------------------------------------
 
 set "SCRIPT_ROOT=%~dp0"
@@ -13,7 +13,7 @@ for %%I in ("%SCRIPT_ROOT%") do set "SCRIPT_ROOT=%%~fI"
 cd /d "%SCRIPT_ROOT%"
 
 if not exist "%SCRIPT_ROOT%\CMakeLists.txt" (
-    echo [ERROR] Please run this script from the MocapNET repository root.
+    echo [ERROR] Please run this script from the MocapNET repository root
     exit /b 1
 )
 
@@ -21,17 +21,17 @@ title MocapNET build and install helper
 
 call :printBanner
 
-rem Resolve a Python interpreter early; tqdm requires it.
+rem Resolve a Python interpreter early; tqdm requires it
 call :ensureProgram "python" "Python.Python.3.11" "python" "Python 3"
 if errorlevel 1 goto :fatal
 set "PYTHON=python"
 
-rem Ensure tqdm is available for progress output.
+rem Ensure tqdm is available for progress output
 call :ensureTqdm
 if errorlevel 1 goto :fatal
 
 :mainMenu
-echo.
+echo
 echo === MocapNET build/install menu ===
 echo   [1] Full install (deps + assets + build + demo)
 echo   [2] Reconfigure and rebuild MocapNET only
@@ -82,8 +82,8 @@ call :progressStep "Compiling MocapNET"
 call :buildMocapNET
 if errorlevel 1 goto :fatal
 
-echo.
-echo Build complete. Launching the live demo next.
+echo
+echo Build complete Launching the live demo next
 call :progressStep "Launching MocapNET live demo"
 call :launchDemo
 if errorlevel 1 goto :fatal
@@ -96,13 +96,13 @@ if errorlevel 1 goto :fatal
 goto :mainMenu
 
 :tensorflowMenu
-echo.
+echo
 echo === TensorFlow build options ===
-echo This repository vendors a prebuilt TensorFlow C API. Building from source
+echo This repository vendors a prebuilt TensorFlow C API Building from source
 echo is optional and requires a properly configured WSL Ubuntu environment with
-echo Bazel, CUDA (optional) and additional prerequisites.
-echo.
-echo   [1] Build TensorFlow r1.15 in WSL using scripts/tensorflowBuild.sh
+echo Bazel, CUDA (optional) and additional prerequisites
+echo
+echo   [1] Build TensorFlow r115 in WSL using scripts/tensorflowBuild.sh
 echo   [2] Return to main menu
 choice /c 12 /n /m "Select an option: "
 if errorlevel 2 goto :mainMenu
@@ -125,7 +125,7 @@ exit /b 0
 
 :progressStep
 set "STEP_DESC=%~1"
-%PYTHON% -c "from tqdm import tqdm; import sys,time; desc=sys.argv[1]; bar=tqdm(total=32, desc=desc, leave=False); [time.sleep(0.05) for _ in range(32)]; bar.close()" "%STEP_DESC%"
+%PYTHON% -c "from tqdm import tqdm; import sys, time; desc=sys.argv[1]; bar=tqdm(total=32, desc=desc, leave=False); [(bar.update(1), time.sleep(0.05)) for _ in range(32)]; bar.close()" "%STEP_DESC%"
 exit /b 0
 
 :ensureProgram
@@ -135,14 +135,14 @@ set "CHOCO_ID=%~3"
 set "DISPLAY=%~4"
 where %BIN_NAME% >nul 2>&1
 if %errorlevel%==0 (
-    echo [+] Found %DISPLAY% executable (%BIN_NAME%).
+    echo [+] Found %DISPLAY% executable (%BIN_NAME%)
     exit /b 0
 )
 
 set "INSTALLED=0"
 where winget >nul 2>&1
 if %errorlevel%==0 if not "%WINGET_ID%"=="" (
-    echo [*] Installing %DISPLAY% via winget...
+    echo [*] Installing %DISPLAY% via winget
     winget install --id "%WINGET_ID%" --source winget -e -h
     if %errorlevel%==0 (
         where %BIN_NAME% >nul 2>&1 && set "INSTALLED=1"
@@ -152,7 +152,7 @@ if %errorlevel%==0 if not "%WINGET_ID%"=="" (
 if "%INSTALLED%"=="0" (
     where choco >nul 2>&1
     if %errorlevel%==0 if not "%CHOCO_ID%"=="" (
-        echo [*] Installing %DISPLAY% via chocolatey...
+        echo [*] Installing %DISPLAY% via chocolatey
         choco install "%CHOCO_ID%" -y
         if %errorlevel%==0 (
         where %BIN_NAME% >nul 2>&1 && set "INSTALLED=1"
@@ -161,11 +161,11 @@ if "%INSTALLED%"=="0" (
 )
 
 if "%INSTALLED%"=="0" (
-    echo [!] Unable to locate %DISPLAY% automatically. Please install it manually and re-run the script.
+    echo [!] Unable to locate %DISPLAY% automatically Please install it manually and re-run the script
     exit /b 1
 )
 
-echo [+] %DISPLAY% installation completed.
+echo [+] %DISPLAY% installation completed
 exit /b 0
 
 :ensureTqdm
@@ -174,14 +174,14 @@ if %errorlevel%==0 (
     exit /b 0
 )
 
-echo [*] Installing Python tqdm module for progress bars...
+echo [*] Installing Python tqdm module for progress bars
 %PYTHON% -m pip install --user --upgrade pip >nul 2>&1
 if %errorlevel% neq 0 (
-    echo [!] Failed to upgrade pip.
+    echo [!] Failed to upgrade pip
 )
 %PYTHON% -m pip install --user tqdm
 if %errorlevel% neq 0 (
-    echo [!] Could not install tqdm automatically.
+    echo [!] Could not install tqdm automatically
     exit /b 1
 )
 exit /b 0
@@ -196,26 +196,33 @@ if errorlevel 1 exit /b 1
 
 rem Try to detect vcpkg - install locally if missing
 if not exist "%SCRIPT_ROOT%\dependencies\vcpkg\vcpkg.exe" (
-    echo [*] Setting up local vcpkg manifest...
+    echo [*] Setting up local vcpkg manifest
     git clone https://github.com/microsoft/vcpkg "%SCRIPT_ROOT%\dependencies\vcpkg"
     if errorlevel 1 (
-        echo [!] Failed to clone vcpkg repository.
+        echo [!] Failed to clone vcpkg repository
         exit /b 1
     )
     call "%SCRIPT_ROOT%\dependencies\vcpkg\bootstrap-vcpkg.bat"
     if errorlevel 1 (
-        echo [!] Failed to bootstrap vcpkg.
+        echo [!] Failed to bootstrap vcpkg
         exit /b 1
     )
 )
 
 set "VCPKG_ROOT=%SCRIPT_ROOT%\dependencies\vcpkg"
 set "VCPKG_TOOLCHAIN=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake"
+set "VCPKG_DEFAULT_TRIPLET=x64-windows"
 
-rem Install OpenCV manifest for x64-windows
-"%VCPKG_ROOT%\vcpkg.exe" install opencv:x64-windows
+rem Install dependencies via vcpkg (manifest aware)
+if exist "%SCRIPT_ROOT%\vcpkg.json" (
+    echo [*] Installing vcpkg manifest dependencies for triplet x64-windows
+    "%VCPKG_ROOT%\vcpkg.exe" install --triplet x64-windows
+) else (
+    echo [*] Installing OpenCV via vcpkg for triplet x64-windows
+    "%VCPKG_ROOT%\vcpkg.exe" install opencv:x64-windows
+)
 if errorlevel 1 (
-    echo [!] Failed to install OpenCV via vcpkg.
+    echo [!] Failed to install dependencies via vcpkg
     exit /b 1
 )
 
@@ -229,7 +236,7 @@ if exist "%VSWHERE%" (
     for /f "usebackq tokens=*" %%I in (`"%VSWHERE%" -latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "VS_INSTALL=%%I"
 )
 if not defined VS_INSTALL (
-    echo [!] Visual Studio with C++ workload not detected. Please install Visual Studio 2022 with "Desktop development with C++" workload.
+    echo [!] Visual Studio with C++ workload not detected Please install Visual Studio 2022 with "Desktop development with C++" workload
     exit /b 1
 )
 
@@ -253,7 +260,7 @@ if exist "%VCPKG_TOOLCHAIN%" (
     cmake -S "%SCRIPT_ROOT%" -B "%BUILD_DIR%" -G "%CMAKE_GENERATOR%" -A x64
 )
 if errorlevel 1 (
-    echo [!] CMake configuration failed.
+    echo [!] CMake configuration failed
     exit /b 1
 )
 exit /b 0
@@ -262,7 +269,7 @@ exit /b 0
 if not defined BUILD_DIR set "BUILD_DIR=%SCRIPT_ROOT%\build"
 cmake --build "%BUILD_DIR%" --config Release --target MocapNET2LiveWebcamDemo
 if errorlevel 1 (
-    echo [!] Build failed.
+    echo [!] Build failed
     exit /b 1
 )
 exit /b 0
@@ -273,12 +280,12 @@ if not exist "%DATASET_ROOT%" mkdir "%DATASET_ROOT%"
 
 rem Optionally download CMU BVH dataset
 if not exist "%DATASET_ROOT%\MotionCapture\READMEFIRST.txt" (
-    echo.
+    echo
     echo The CMU BVH dataset (~1GB download, 4GB unpacked) is optional and only
-    echo required for dataset generation utilities.
+    echo required for dataset generation utilities
     choice /c YN /n /m "Download CMU dataset? [Y/N]: "
     if errorlevel 2 (
-        echo Skipping CMU dataset download.
+        echo Skipping CMU dataset download
     ) else (
         call :downloadFile "https://drive.google.com/u/3/uc?id=1Zt-MycqhMylfBUqgmW9sLBclNNxoNGqV&export=download&confirm=yes" "%DATASET_ROOT%\CMUPlusHeadMotionCapture.zip"
         if errorlevel 1 exit /b 1
@@ -289,17 +296,17 @@ if not exist "%DATASET_ROOT%\MotionCapture\READMEFIRST.txt" (
 
 rem Download demo video
 if not exist "%SCRIPT_ROOT%\shuffle.webm" (
-    call :downloadFile "http://cvrlcode.ics.forth.gr/web_share/mocapnet/shuffle.webm" "%SCRIPT_ROOT%\shuffle.webm"
+    call :downloadFile "http://cvrl.ics.forth.gr/web_share/mocapnet/shuffle.webm" "%SCRIPT_ROOT%\shuffle.webm"
     if errorlevel 1 exit /b 1
 )
 
 rem Download makehuman assets
 if not exist "%DATASET_ROOT%\makehuman.tri" (
-    call :downloadFile "http://cvrlcode.ics.forth.gr/web_share/mocapnet/makehuman.tri" "%DATASET_ROOT%\makehuman.tri"
+    call :downloadFile "http://cvrl.ics.forth.gr/web_share/mocapnet/makehuman.tri" "%DATASET_ROOT%\makehuman.tri"
     if errorlevel 1 exit /b 1
 )
 if not exist "%DATASET_ROOT%\makehuman.dae" (
-    call :downloadFile "http://cvrlcode.ics.forth.gr/web_share/mocapnet/makehuman.dae" "%DATASET_ROOT%\makehuman.dae"
+    call :downloadFile "http://cvrl.ics.forth.gr/web_share/mocapnet/makehuman.dae" "%DATASET_ROOT%\makehuman.dae"
     if errorlevel 1 exit /b 1
 )
 
@@ -311,9 +318,9 @@ if not exist "%SCRIPT_ROOT%\allInOneMNET2RedistMirrorICPR2020.zip" (
 )
 
 rem Ensure neural network models exist
-set "MODE_DIR=%DATASET_ROOT%\combinedModel\mocapnet2\mode5\1.0"
+set "MODE_DIR=%DATASET_ROOT%\combinedModel\mocapnet2\mode5\10"
 if not exist "%MODE_DIR%" mkdir "%MODE_DIR%"
-set "MODEL_SOURCE=http://cvrlcode.ics.forth.gr/web_share/mocapnet/icpr2020"
+set "MODEL_SOURCE=http://cvrl.ics.forth.gr/web_share/mocapnet/icpr2020"
 for %%M in (categorize_lowerbody_all.pb lowerbody_left.pb upperbody_left.pb categorize_upperbody_all.pb lowerbody_right.pb upperbody_right.pb lowerbody_back.pb upperbody_back.pb lowerbody_front.pb upperbody_front.pb) do (
     if not exist "%MODE_DIR%\%%M" (
         call :downloadFile "%MODEL_SOURCE%/%%M" "%MODE_DIR%\%%M"
@@ -324,32 +331,39 @@ for %%M in (categorize_lowerbody_all.pb lowerbody_left.pb upperbody_left.pb cate
 set "COMBINED_DIR=%DATASET_ROOT%\combinedModel"
 if not exist "%COMBINED_DIR%" mkdir "%COMBINED_DIR%"
 if not exist "%COMBINED_DIR%\openpose_model.pb" (
-    call :downloadFile "http://cvrlcode.ics.forth.gr/web_share/mocapnet/combinedModel/openpose_model.pb" "%COMBINED_DIR%\openpose_model.pb"
+    call :downloadFile "http://cvrl.ics.forth.gr/web_share/mocapnet/combinedModel/openpose_model.pb" "%COMBINED_DIR%\openpose_model.pb"
     if errorlevel 1 exit /b 1
 )
-if not exist "%COMBINED_DIR%\vnect_sm_pafs_8.1k.pb" (
-    call :downloadFile "http://cvrlcode.ics.forth.gr/web_share/mocapnet/combinedModel/vnect_sm_pafs_8.1k.pb" "%COMBINED_DIR%\vnect_sm_pafs_8.1k.pb"
+if not exist "%COMBINED_DIR%\vnect_sm_pafs_81k.pb" (
+    call :downloadFile "http://cvrl.ics.forth.gr/web_share/mocapnet/combinedModel/vnect_sm_pafs_81k.pb" "%COMBINED_DIR%\vnect_sm_pafs_81k.pb"
     if errorlevel 1 exit /b 1
 )
-if not exist "%COMBINED_DIR%\mobnet2_tiny_vnect_sm_1.9k.pb" (
-    call :downloadFile "http://cvrlcode.ics.forth.gr/web_share/mocapnet/combinedModel/mobnet2_tiny_vnect_sm_1.9k.pb" "%COMBINED_DIR%\mobnet2_tiny_vnect_sm_1.9k.pb"
+if not exist "%COMBINED_DIR%\mobnet2_tiny_vnect_sm_19k.pb" (
+    call :downloadFile "http://cvrl.ics.forth.gr/web_share/mocapnet/combinedModel/mobnet2_tiny_vnect_sm_19k.pb" "%COMBINED_DIR%\mobnet2_tiny_vnect_sm_19k.pb"
     if errorlevel 1 exit /b 1
 )
 
-echo [+] Asset download complete.
+echo [+] Asset download complete
 exit /b 0
 
 :downloadFile
-set "URL=%~1"
-set "DEST=%~2"
-if exist "%DEST%" (
-    echo [=] %DEST% already present. Skipping download.
+set "DL_URL=%~1"
+set "DL_DEST=%~2"
+if exist "%DL_DEST%" (
+    echo [=] "%DL_DEST%" already present Skipping download
     exit /b 0
 )
-echo [*] Downloading %URL%
-powershell -NoLogo -NoProfile -Command "Invoke-WebRequest -Uri '%URL%' -OutFile '%DEST%' -UseBasicParsing"
+
+for %%I in ("%DL_DEST%") do set "DL_DIR=%%~dpI"
+if defined DL_DIR if not exist "%DL_DIR%" (
+    mkdir "%DL_DIR%" >nul 2>&1
+)
+
+echo [*] Downloading "%DL_DEST%"
+powershell -NoLogo -NoProfile -Command ^
+    "$ErrorActionPreference='Stop';$url=$env:DL_URL;$dest=$env:DL_DEST;Invoke-WebRequest -Uri $url -OutFile $dest -UseBasicParsing"
 if errorlevel 1 (
-    echo [!] Failed to download %URL%
+    echo [!] Failed to download "%DL_DEST%"
     exit /b 1
 )
 exit /b 0
@@ -364,7 +378,7 @@ if not exist "%DEMO_EXE%" (
     exit /b 1
 )
 
-set "DEMO_SOURCE=--from \"%SCRIPT_ROOT%shuffle.webm\" --openpose --frames 375"
+set "DEMO_SOURCE=--from ""%SCRIPT_ROOT%\shuffle.webm"" --openpose --frames 375"
 if exist "%SCRIPT_ROOT%\shuffle.webm" (
     "%DEMO_EXE%" %DEMO_SOURCE%
 ) else (
@@ -375,26 +389,26 @@ exit /b 0
 :buildTensorflowWSL
 where wsl >nul 2>&1
 if %errorlevel% neq 0 (
-    echo [!] Windows Subsystem for Linux (wsl.exe) is not available. Install WSL and Ubuntu to continue.
+    echo [!] Windows Subsystem for Linux (wsl.exe) is not available Install WSL and Ubuntu to continue
     exit /b 1
 )
 for /f "usebackq tokens=*" %%I in (`wsl wslpath "%SCRIPT_ROOT%"`) do set "WSL_ROOT=%%I"
 if not defined WSL_ROOT (
-    echo [!] Unable to map repository path to WSL.
+    echo [!] Unable to map repository path to WSL
     exit /b 1
 )
 
 wsl bash -lc "cd '%WSL_ROOT%' && chmod +x scripts/tensorflowBuild.sh && ./scripts/tensorflowBuild.sh"
 if %errorlevel% neq 0 (
-    echo [!] TensorFlow build exited with errors. Inspect the WSL console output for details.
+    echo [!] TensorFlow build exited with errors Inspect the WSL console output for details
     exit /b 1
 )
 
-echo [+] TensorFlow build completed successfully. Collect the generated archives from the WSL home directory as indicated by the script.
+echo [+] TensorFlow build completed successfully Collect the generated archives from the WSL home directory as indicated by the script
 exit /b 0
 
 :fatal
-echo.
-echo [FATAL] The build/install script encountered an unrecoverable error.
-echo Please review the messages above, address the issue, and rerun build_install.bat.
+echo
+echo [FATAL] The build/install script encountered an unrecoverable error
+echo Please review the messages above, address the issue, and rerun build_install.bat
 exit /b 1
