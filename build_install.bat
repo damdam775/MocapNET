@@ -213,6 +213,9 @@ set "VCPKG_ROOT=%SCRIPT_ROOT%\dependencies\vcpkg"
 set "VCPKG_TOOLCHAIN=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake"
 set "VCPKG_DEFAULT_TRIPLET=x64-windows"
 
+call :findVisualStudio
+if errorlevel 1 exit /b 1
+
 rem Install dependencies via vcpkg (manifest aware)
 if exist "%SCRIPT_ROOT%\vcpkg.json" (
     echo [*] Installing vcpkg manifest dependencies for triplet x64-windows
@@ -226,8 +229,6 @@ if errorlevel 1 (
     exit /b 1
 )
 
-call :findVisualStudio
-if errorlevel 1 exit /b 1
 exit /b 0
 
 :findVisualStudio
