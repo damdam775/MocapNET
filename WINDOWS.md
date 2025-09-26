@@ -4,7 +4,7 @@ This repository can be built with Microsoft Visual Studio 2022 and the NVIDIA CU
 
 ## Prerequisites
 
-1. **CMake** 3.24 or newer and a recent MSVC toolset.
+1. **Visual Studio 2022** with the **Desktop development with C++** workload (provides the MSVC toolset) and **CMake** 3.24 or newer.
 2. **TensorFlow C API for Windows** (GPU or CPU). Download the official `libtensorflow` archive (e.g. `libtensorflow-cpu-windows-x86_64-2.13.0.zip`) from [TensorFlow.org](https://www.tensorflow.org/install/lang_c) and extract it to:
    ```text
    dependencies/libtensorflow/
@@ -16,9 +16,9 @@ This repository can be built with Microsoft Visual Studio 2022 and the NVIDIA CU
        └── tensorflow_framework.lib
    ```
    The repository’s CMake files will automatically pick up the vendored package when `tensorflow.dll` is present under `dependencies/libtensorflow/lib/`.
-3. **OpenCV** through [vcpkg](https://github.com/microsoft/vcpkg):
+3. **OpenCV** through [vcpkg](https://github.com/microsoft/vcpkg). The repository ships with a `vcpkg.json` manifest, so running the helper script or invoking vcpkg from the repository root automatically installs the required ports:
    ```powershell
-   vcpkg install opencv:x64-windows
+   vcpkg install --triplet x64-windows
    ```
    Configure CMake with the vcpkg toolchain, for example:
    ```powershell
